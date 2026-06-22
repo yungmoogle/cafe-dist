@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAFÉ — turn idle GPUs into income</title>
+  <meta name="description" content="Café turns idle gaming-café GPUs into income. Install it, turn it on, earn — it routes your GPU to paid AI inference demand." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="reg reg-tl"></div><div class="reg reg-tr"></div>
+  <div class="reg reg-bl"></div><div class="reg reg-br"></div>
+
+  <div class="frame">
+    <header class="hdr">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+          <rect x="20" y="6" width="13" height="13" transform="rotate(45 20 20)" fill="#0b0b0b"/>
+        </svg>
+        <span class="wm">CAFÉ</span>
+      </div>
+      <a class="hdr-link" href="https://github.com/yungmoogle/cafe-dist/releases" target="_blank" rel="noopener">RELEASES ↗</a>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">GPU YIELD TERMINAL / FOR GAMING CAFÉS</div>
+      <h1 class="big">TURN IDLE<br/>GPUs INTO<br/>INCOME.</h1>
+      <p class="lede">
+        Café installs on your gaming PCs and quietly rents their GPUs to paid AI
+        inference demand while they sit idle. Plug in, turn on, earn — it runs in
+        the background and routes each GPU to the best-paying work.
+      </p>
+
+      <div class="dl">
+        <a id="dl-primary" class="dl-primary" href="#">
+          <span class="dl-os" id="dl-os">DOWNLOAD</span>
+          <span class="dl-sub" id="dl-sub">detecting platform…</span>
+        </a>
+        <div class="dl-all" id="dl-all"></div>
+      </div>
+      <div class="req">Requires <a href="https://ollama.com/download" target="_blank" rel="noopener">Ollama</a> · NVIDIA (gaming) or Apple Silicon GPU · the app pulls its model on first run.</div>
+    </section>
+
+    <section class="steps">
+      <div class="step"><div class="n">01</div><div class="st">INSTALL</div><div class="sb">Download for your OS and open it. A tray app, ~20&nbsp;MB.</div></div>
+      <div class="step"><div class="n">02</div><div class="st">TURN ON</div><div class="sb">Hit start. It auto-detects the GPU, pulls a model, and connects to the network.</div></div>
+      <div class="step"><div class="n">03</div><div class="st">EARN</div><div class="sb">Paid inference jobs route to your GPU. Watch credits accrue in the dashboard.</div></div>
+    </section>
+
+    <section class="specs">
+      <div class="block-hd"><h2>SYSTEM REQUIREMENTS</h2></div>
+      <div class="sgrid">
+        <div class="srow"><span class="sk">OS</span><span class="dots"></span><span class="sv">Windows 10/11 · macOS 12+ · Linux</span></div>
+        <div class="srow"><span class="sk">GPU</span><span class="dots"></span><span class="sv">NVIDIA 8&nbsp;GB+ · Apple Silicon</span></div>
+        <div class="srow"><span class="sk">RUNTIME</span><span class="dots"></span><span class="sv">Ollama (free)</span></div>
+        <div class="srow"><span class="sk">MODEL</span><span class="dots"></span><span class="sv">Hermes 3 8B — auto-pulled, sized to your GPU</span></div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span>CAFÉ © 2026</span><span class="sep">/</span>
+      <span id="ver">v—</span><span class="sep">/</span>
+      <a href="https://github.com/yungmoogle/cafe-dist/releases" target="_blank" rel="noopener">ALL RELEASES ↗</a>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAFÉ — idle revenue for gaming cafés</title>
+  <meta name="description" content="Your gaming PCs sit idle most of the day. Café turns those idle GPUs into passive income — and yields instantly the moment a customer sits down. Estimate what your floor could earn." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* page-specific — reuses the tokens + base from style.css */
+    .kicker { padding: 44px 0 30px; border-bottom: 2px solid var(--ink); }
+    .kicker h1 { font-family: var(--disp); font-weight: 800; font-stretch: 125%;
+      font-size: clamp(40px, 8vw, 92px); line-height: 0.88; letter-spacing: -0.02em; }
+    .kicker .lede { max-width: 600px; margin-top: 22px; font-size: 14px; line-height: 1.7; color: #2a2a26; }
+
+    /* estimator */
+    .est { padding: 34px 0; border-bottom: 2px solid var(--ink); }
+    .est-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: start; }
+    .ctrl { padding: 13px 0; border-top: 1px solid var(--line); }
+    .ctrl:first-child { border-top: none; }
+    .ctrl .lab { display: flex; justify-content: space-between; align-items: baseline; }
+    .ctrl .lk { font-size: 10px; letter-spacing: 0.2em; color: var(--mut); }
+    .ctrl .lv { font-family: var(--disp); font-weight: 800; font-stretch: 110%; font-size: 18px; }
+    .ctrl input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 2px;
+      background: var(--line2); margin-top: 14px; cursor: pointer; }
+    .ctrl input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none;
+      width: 16px; height: 16px; background: var(--ink); border-radius: 0; cursor: pointer; }
+    .ctrl input[type=range]::-moz-range-thumb { width: 16px; height: 16px; background: var(--ink);
+      border: none; border-radius: 0; cursor: pointer; }
+
+    .readout { border: 2px solid var(--ink); padding: 26px; background: var(--ink); color: var(--paper); }
+    .readout .ro-lab { font-size: 10px; letter-spacing: 0.24em; opacity: 0.66; }
+    .readout .ro-big { font-family: var(--disp); font-weight: 800; font-stretch: 120%;
+      font-size: clamp(44px, 9vw, 72px); line-height: 0.92; margin: 4px 0 2px; }
+    .readout .ro-per { font-size: 11px; letter-spacing: 0.16em; opacity: 0.66; margin-bottom: 22px; }
+    .ro-row { display: flex; align-items: baseline; gap: 10px; padding: 8px 0; border-top: 1px solid rgba(236,235,228,0.22); }
+    .ro-row .rk { font-size: 10px; letter-spacing: 0.16em; opacity: 0.66; white-space: nowrap; }
+    .ro-row .rd { flex: 1; border-bottom: 1px dotted rgba(236,235,228,0.3); transform: translateY(-3px); }
+    .ro-row .rv { font-family: var(--disp); font-weight: 700; font-stretch: 106%; font-size: 16px; text-align: right; }
+    .est-note { margin-top: 18px; font-size: 11px; line-height: 1.6; color: var(--mut); letter-spacing: 0.03em; }
+
+    /* value props */
+    .props { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; padding: 34px 0; border-bottom: 1px solid var(--ink); }
+    .prop { border-left: 2px solid var(--ink); padding-left: 14px; }
+    .prop .pt { font-family: var(--disp); font-weight: 800; font-stretch: 112%; font-size: 18px; margin-bottom: 7px; }
+    .prop .pb { font-size: 12px; line-height: 1.65; color: #2a2a26; }
+
+    /* objections */
+    .obj { padding: 30px 0; border-bottom: 1px solid var(--ink); }
+    .obj-row { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 20px; padding: 12px 0; border-top: 1px solid var(--line); }
+    .obj-row .oq { font-family: var(--disp); font-weight: 700; font-stretch: 106%; font-size: 14px; }
+    .obj-row .oa { font-size: 12px; line-height: 1.6; color: #2a2a26; }
+
+    /* CTA */
+    .cta { padding: 40px 0 14px; }
+    .cta h2 { font-family: var(--disp); font-weight: 800; font-stretch: 120%; font-size: clamp(30px, 6vw, 56px); line-height: 0.92; letter-spacing: -0.01em; }
+    .cta p { max-width: 520px; margin: 18px 0 26px; font-size: 13px; line-height: 1.7; color: #2a2a26; }
+    .cta-act { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .cta-btn { background: var(--ink); color: var(--paper); text-decoration: none; padding: 15px 28px;
+      font-family: var(--disp); font-weight: 800; font-stretch: 112%; font-size: 16px; letter-spacing: 0.03em; }
+    .cta-btn:hover { opacity: 0.85; }
+    .cta-mail { font-size: 12px; letter-spacing: 0.06em; color: var(--ink); }
+
+    @media (max-width: 720px) {
+      .est-grid, .props, .obj-row { grid-template-columns: 1fr; }
+    }
+    /* clean one-page print = the leave-behind */
+    @media print {
+      :root { --paper: #fff; }
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .reg, .hdr-link, .est input[type=range], .cta-btn { display: none !important; }
+      .frame { max-width: none; padding: 0 8px; }
+      .est, .props, .obj, .cta, .kicker { break-inside: avoid; }
+      a { text-decoration: none; color: var(--ink); }
+    }
+  </style>
+</head>
+<body>
+  <div class="reg reg-tl"></div><div class="reg reg-tr"></div>
+  <div class="reg reg-bl"></div><div class="reg reg-br"></div>
+
+  <div class="frame">
+    <header class="hdr">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+          <rect x="20" y="6" width="13" height="13" transform="rotate(45 20 20)" fill="#0b0b0b"/>
+        </svg>
+        <span class="wm">CAFÉ</span>
+      </div>
+      <a class="hdr-link" href="index.html">DOWNLOAD ↗</a>
+    </header>
+
+    <section class="kicker">
+      <div class="eyebrow">IDLE REVENUE PROGRAM / FOR GAMING CAFÉ OWNERS</div>
+      <h1>YOUR PCs<br/>ARE IDLE.<br/>PAY THEM<br/>RENT.</h1>
+      <p class="lede">
+        Your floor is full at night and empty by day. Every idle hour is a GPU you
+        already paid for, earning nothing. Café quietly rents those idle GPUs to paid
+        AI inference demand — and yields the machine back the <em>instant</em> a
+        customer sits down. Found money on hardware you already own.
+      </p>
+    </section>
+
+    <!-- ESTIMATOR -->
+    <section class="est">
+      <div class="block-hd"><h2>IDLE REVENUE ESTIMATOR</h2></div>
+      <div class="est-grid">
+        <div class="inputs">
+          <div class="ctrl">
+            <div class="lab"><span class="lk">GAMING PCs ON FLOOR</span><span class="lv" id="v-pcs">30</span></div>
+            <input type="range" id="pcs" min="1" max="120" step="1" value="30" />
+          </div>
+          <div class="ctrl">
+            <div class="lab"><span class="lk">IDLE HOURS / PC / DAY</span><span class="lv" id="v-hrs">10</span></div>
+            <input type="range" id="hrs" min="1" max="22" step="1" value="10" />
+          </div>
+          <div class="ctrl">
+            <div class="lab"><span class="lk">GROSS RATE / GPU-HOUR</span><span class="lv" id="v-rate">$0.15</span></div>
+            <input type="range" id="rate" min="5" max="60" step="1" value="15" />
+          </div>
+          <div class="ctrl">
+            <div class="lab"><span class="lk">POWER COST / kWh</span><span class="lv" id="v-kwh">$0.15</span></div>
+            <input type="range" id="kwh" min="5" max="45" step="1" value="15" />
+          </div>
+          <div class="ctrl">
+            <div class="lab"><span class="lk">GPU DRAW UNDER LOAD</span><span class="lv" id="v-watt">250W</span></div>
+            <input type="range" id="watt" min="120" max="450" step="10" value="250" />
+          </div>
+        </div>
+
+        <div class="readout">
+          <div class="ro-lab">EST. NET / MONTH</div>
+          <div class="ro-big" id="ro-month">$0</div>
+          <div class="ro-per">ACROSS YOUR WHOLE FLOOR, AFTER POWER</div>
+          <div class="ro-row"><span class="rk">GROSS / MO</span><span class="rd"></span><span class="rv" id="ro-gross">$0</span></div>
+          <div class="ro-row"><span class="rk">POWER / MO</span><span class="rd"></span><span class="rv" id="ro-power">−$0</span></div>
+          <div class="ro-row"><span class="rk">NET / DAY</span><span class="rd"></span><span class="rv" id="ro-day">$0</span></div>
+          <div class="ro-row"><span class="rk">NET / YEAR</span><span class="rd"></span><span class="rv" id="ro-year">$0</span></div>
+        </div>
+      </div>
+      <p class="est-note">
+        Estimate only — not a guarantee. Real yield depends on live AI-inference demand,
+        GPU class, and uptime. Rates shown are illustrative; we run a no-cost pilot so you
+        measure your <em>own</em> numbers before committing. You only ever earn on hours a
+        machine is genuinely idle.
+      </p>
+    </section>
+
+    <!-- VALUE PROPS -->
+    <section class="props">
+      <div class="prop"><div class="pt">FOUND MONEY, ZERO CAPEX</div><div class="pb">The GPUs are already bought and depreciating. This monetizes the idle hours you're currently throwing away — no new hardware, no new staff workload.</div></div>
+      <div class="prop"><div class="pt">GAMERS NEVER NOTICE</div><div class="pb">It runs at low OS priority with idle-gating. A customer sits down, it yields the GPU instantly. No lag, no stutter, no complaints — it only works the empty seats.</div></div>
+      <div class="prop"><div class="pt">INSTALL ONCE, FORGET IT</div><div class="pb">One signed installer per PC (Windows / macOS / Linux). Turn it on and it auto-detects the GPU, loads a model, and starts taking paid work. No crypto wallet, no babysitting.</div></div>
+      <div class="prop"><div class="pt">WATCH THE NUMBER GO UP</div><div class="pb">A built-in ledger and dashboard show credits accruing on idle machines in real time. Transparent, auditable, yours.</div></div>
+    </section>
+
+    <!-- OBJECTIONS -->
+    <section class="obj">
+      <div class="block-hd"><h2>STRAIGHT ANSWERS</h2></div>
+      <div class="obj-row"><div class="oq">Will it slow my gamers?</div><div class="oa">No. Idle-gating yields the GPU the moment a session starts. It only ever runs on machines nobody is using.</div></div>
+      <div class="obj-row"><div class="oq">What about my power bill?</div><div class="oa">It runs throttled and off-peak. The estimator above already nets out electricity — and it's far gentler on a card than a 6-hour gaming session.</div></div>
+      <div class="obj-row"><div class="oq">Is this crypto mining?</div><div class="oa">No. It rents idle compute to AI inference networks — the same thing data centers do, just on the hours your floor sits empty.</div></div>
+      <div class="obj-row"><div class="oq">How hard is setup?</div><div class="oa">One installer per PC. We do the first install with you and stay on for the pilot. Uninstall any time — it costs you nothing.</div></div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <h2>RUN A FREE<br/>2-WEEK PILOT.</h2>
+      <p>
+        Put it on a handful of PCs, watch the ledger, keep the math. We don't get paid
+        unless your machines do. If it's not worth it, uninstall — no cost, no contract.
+      </p>
+      <div class="cta-act">
+        <a class="cta-btn" href="mailto:chris@scissor.cloud?subject=CAFÉ%20idle-revenue%20pilot">START A PILOT</a>
+        <span class="cta-mail">or email <a href="mailto:chris@scissor.cloud">chris@scissor.cloud</a></span>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span>CAFÉ © 2026</span><span class="sep">/</span>
+      <a href="index.html">DOWNLOAD</a><span class="sep">/</span>
+      <a href="https://github.com/yungmoogle/cafe-dist/releases" target="_blank" rel="noopener">RELEASES ↗</a>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const $ = (id) => document.getElementById(id);
+      const ids = ["pcs", "hrs", "rate", "kwh", "watt"];
+      const fmt = (n) => "$" + Math.round(n).toLocaleString("en-US");
+
+      function recalc() {
+        const pcs  = +$("pcs").value;
+        const hrs  = +$("hrs").value;
+        const rate = +$("rate").value / 100;   // $/GPU-hour
+        const kwh  = +$("kwh").value / 100;     // $/kWh
+        const watt = +$("watt").value;          // W under load
+
+        // labels
+        $("v-pcs").textContent  = pcs;
+        $("v-hrs").textContent  = hrs;
+        $("v-rate").textContent = "$" + rate.toFixed(2);
+        $("v-kwh").textContent  = "$" + kwh.toFixed(2);
+        $("v-watt").textContent = watt + "W";
+
+        const gpuHoursMo = pcs * hrs * 30;
+        const gross = gpuHoursMo * rate;
+        const power = gpuHoursMo * (watt / 1000) * kwh;
+        const net   = Math.max(0, gross - power);
+
+        $("ro-gross").textContent = fmt(gross);
+        $("ro-power").textContent = "−" + fmt(power);
+        $("ro-month").textContent = fmt(net);
+        $("ro-day").textContent   = fmt(net / 30);
+        $("ro-year").textContent  = fmt(net * 12);
+      }
+
+      ids.forEach((id) => $(id).addEventListener("input", recalc));
+      recalc();
+    })();
+  </script>
+</body>
+</html>
